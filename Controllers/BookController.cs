@@ -1,7 +1,13 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using BiblioServer.Models;
 using BiblioServer.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 
@@ -184,6 +190,45 @@ public class BookController : ControllerBase
         }
 
         return currentPage;
+    }
+
+    //Update Book Route
+    [HttpPut("update")]
+    public async Task<IActionResult> UpdateBook([FromForm] BookUpdateModel updateModel)
+    {
+        try
+        {
+            var bookId = updateModel.Id;
+
+            if (bookId == null)
+            {
+                return BadRequest("Invalid or missing token");
+            }
+
+            if (updateModel.CoverImageFile != null)
+            {
+                var supportedTypes = new[] { "jpeg", "jpg", "png", "webp", "gif" };
+                var fileExtension = Path.GetExtension(updateModel.CoverImageFile.FileName).TrimStart('.');
+
+                if (!supportedTypes.Contains(fileExtension, StringComparer.OrdinalIgnoreCase))
+                {
+                    return BadRequest("InvalidFileType");
+                }
+            }
+
+            var response = await _bookService.RouteUpdateBookAsync(bookId, updateModel);
+
+            if (response == "bookExist")
+            {
+                return BadRequest(response);
+            }
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal Server Error: {ex.Message}");
+        }
     }
 
     private int CalculateTotalPages(string filePath, int pageSize)

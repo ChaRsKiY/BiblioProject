@@ -1,7 +1,10 @@
 ﻿
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using BiblioServer.Models;
 using BiblioServer.Repositories;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BiblioServer.Services
 {
@@ -65,6 +68,74 @@ namespace BiblioServer.Services
             };
 
             await _bookRepository.AddBookAsync(newBook);
+        }
+
+        //Updates user data
+        public async Task<string> RouteUpdateBookAsync(int bookId, BookUpdateModel updateModel)
+        {
+            var book = await _bookRepository.GetBookByIdAsync(bookId);
+
+            if (book != null)
+            {
+                if (!string.IsNullOrEmpty(updateModel.Title))
+                {
+                    book.Title = updateModel.Title;
+                }
+
+                if (!string.IsNullOrEmpty(updateModel.Author))
+                {
+                    book.Author = updateModel.Author;
+                }
+                
+                if (updateModel.GenreId != null)
+                {
+                    book.GenreId = (int)updateModel.GenreId;
+                }
+
+                if (!string.IsNullOrEmpty(updateModel.Description))
+                {
+                    book.Description = updateModel.Description;
+                }
+                
+                if (updateModel.Year != null)
+                {
+                    book.Year = updateModel.Year;
+                }
+
+                if (!string.IsNullOrEmpty(updateModel.Content))
+                {
+                    book.Content = updateModel.Content;
+                }
+
+                if (updateModel.CoverImageFile != null)
+                {
+                    // Delete the previous cover if it exists
+                    var previousCoverImagePath = Path.Combine("wwwroot/covers", book.CoverImage);
+                    if (System.IO.File.Exists(previousCoverImagePath))
+                    {
+                        System.IO.File.Delete(previousCoverImagePath);
+                    }
+
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(updateModel.CoverImageFile.FileName);
+                    var filePath = Path.Combine("wwwroot/covers", fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await updateModel.CoverImageFile.CopyToAsync(stream);
+                    }
+
+                    book.CoverImage = fileName;
+                }
+
+                await _bookRepository.UpdateBookAsync(updateModel.Id, book);
+
+                return "";
+
+            }
+            else
+            {
+                return "bookExist";
+            }
         }
 
         public async Task<Book> UpdateBookAsync(int id, Book book)

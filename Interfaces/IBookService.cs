@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using BiblioServer.Models;
 
 namespace BiblioServer.Services
@@ -12,6 +14,7 @@ namespace BiblioServer.Services
         Task<bool> DeleteBookAsync(int id);
         Task<IEnumerable<Book>> GetTrendingBooksAsync();
         Task<IEnumerable<Book>> GetPopularBooksAsync();
+        Task<string> RouteUpdateBookAsync(int bookId, BookUpdateModel updateModel);
     }
 }
 
