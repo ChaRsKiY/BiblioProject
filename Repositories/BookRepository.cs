@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing.Printing;
+using System.Linq;
+using System.Threading.Tasks;
 using BiblioServer.Context;
 using BiblioServer.Models;
 using Microsoft.EntityFrameworkCore;
@@ -82,6 +85,11 @@ namespace BiblioServer.Repositories
         public async Task<Book> GetBookByIdAsync(int id)
         {
             return await _context.Books.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<Book>> GetBookByUserIdAsync(int userId)
+        {
+            return await _context.Books.Where(book => book.UserId == userId).ToListAsync();
         }
 
         public async Task AddBookAsync(Book book)

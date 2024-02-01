@@ -9,6 +9,7 @@ namespace BiblioServer.Services
     {
         Task<object> GetBooksAsync(BookQueryParameters queryParameters);
         Task<Book> GetBookByIdAsync(int id);
+        Task<IEnumerable<Book>> GetBookByUserIdAsync(int userId);
         Task AddBookAsync(int userId, AddBookModel book);
         Task<Book> UpdateBookAsync(int id, Book book);
         Task<bool> DeleteBookAsync(int id);

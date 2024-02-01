@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,7 +17,8 @@ public class Book
     [MaxLength(60)]
     public string? Author { get; set; }
 
-
+    [ForeignKey("UserId")]
+    public int UserId { get; set; }
 
     [ForeignKey("GenreId")]
     public int GenreId { get; set; }

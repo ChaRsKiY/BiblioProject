@@ -37,6 +37,11 @@ namespace BiblioServer.Services
             return await _bookRepository.GetBookByIdAsync(id);
         }
 
+        public async Task<IEnumerable<Book>> GetBookByUserIdAsync(int userId)
+        {
+            return await _bookRepository.GetBookByUserIdAsync(userId);
+        }
+
         public async Task AddBookAsync(int userId, AddBookModel book)
         {
             var coverFileName = Guid.NewGuid().ToString() + Path.GetExtension(book.Image.FileName);
@@ -61,6 +66,7 @@ namespace BiblioServer.Services
                 Title = book.Title,
                 Year = book.Year,
                 GenreId = book.GenreId,
+                UserId = userId,
                 Description = book.Description,
                 CoverImage = coverFileName,
                 PublicationDate = DateTime.Now,

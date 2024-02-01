@@ -80,13 +80,21 @@ public class BookController : ControllerBase
         return Ok(book);
     }
 
+    [HttpGet("userId")]
+    public async Task<IActionResult> GetBookByUserId([FromQuery]string userId)
+    {
+        var book = await _bookService.GetBookByUserIdAsync(int.Parse(userId));
+
+        return Ok(book);
+    }
+
     [HttpPost]
-    //[Authorize]
+    [Authorize]
     public async Task<IActionResult> AddBook([FromForm] AddBookModel createModel)
     {
         try
         {
-            var userId = 0;//User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (userId == null)
             {
@@ -104,12 +112,7 @@ public class BookController : ControllerBase
                 }
             }
 
-            await _bookService.AddBookAsync(userId, createModel);
-
-            //if (response == "usernameExist" || response == "userExist")
-            //{
-            //    return BadRequest(response);
-            //}
+            await _bookService.AddBookAsync(int.Parse(userId), createModel);
 
             return Ok();
         }
