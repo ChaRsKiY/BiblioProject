@@ -11,6 +11,10 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using BiblioServer.Middlewares;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,8 +31,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
-string securityKey = builder.Configuration["JwtSettings:SecurityKey"] ?? throw new InvalidOperationException("JwtSettings:SecurityKey is missing in configuration.");
+string securityKey = builder.Configuration["JwtSettings:SecurityKey"];
 builder.Services.AddScoped<ITokenService, TokenService>(provider => new TokenService(securityKey));
 
 builder.Services.AddScoped<IRegistrationService, RegistrationService>();
@@ -38,6 +43,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IResetPasswordService, ResetPasswordService>();
 builder.Services.AddScoped<IGenreService, GenreService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IChangeEmailService, ChangeEmailService>();
 
 builder.Services.AddScoped<IBookService, BookService>();
@@ -61,7 +67,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", builder =>
     {
-        builder.WithOrigins("http://localhost:3001") //Front-End url for cors 
+        builder.WithOrigins("http://localhost:3000") //Front-End url for cors 
                .AllowAnyHeader()
                .AllowAnyMethod();
     });
