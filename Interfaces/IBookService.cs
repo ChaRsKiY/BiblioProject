@@ -16,6 +16,7 @@ namespace BiblioServer.Services
         Task<IEnumerable<Book>> GetTrendingBooksAsync();
         Task<IEnumerable<Book>> GetPopularBooksAsync();
         Task<string> RouteUpdateBookAsync(int bookId, BookUpdateModel updateModel);
+        Task UpdateRatingAsync(int newRating, int bookId);
     }
 }
 

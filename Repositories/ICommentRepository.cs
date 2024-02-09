@@ -7,6 +7,7 @@ namespace BiblioServer.Repositories
 {
     public interface ICommentRepository
     {
+        Task<IEnumerable<Comment>> GetCommentsByBookId(int bookId);
         Task<IEnumerable<Comment>> GetCommentsAsync();
         Task CreateCommentAsync(Comment model);
         Task UpdateCommentAsync(Comment model);

@@ -1,7 +1,14 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Context",
+    "\\Controllers",
+    "\\Interfaces",
+    "\\Migrations",
+    "\\Models",
+    "\\Repositories",
+    "\\Services"
   ],
-  "SelectedNode": "\\C:\\Users\\mrbla\\Source\\Repos\\BiblioProject",
+  "SelectedNode": "\\Services\\BookService.cs",
   "PreviewInSolutionExplorer": false
 }

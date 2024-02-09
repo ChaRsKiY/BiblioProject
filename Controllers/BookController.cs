@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.StaticFiles;
 public class BookController : ControllerBase
 {
     private readonly IBookService _bookService;
-
     public BookController(IBookService bookService)
     {
         _bookService = bookService;
@@ -234,6 +233,7 @@ public class BookController : ControllerBase
         }
     }
 
+   
     private int CalculateTotalPages(string filePath, int pageSize)
     {
         var text = System.IO.File.ReadAllText(filePath);

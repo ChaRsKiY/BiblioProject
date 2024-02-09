@@ -16,6 +16,10 @@ namespace BiblioServer.Repositories
             _context = context;
         }
 
+        public async Task<IEnumerable<Comment>> GetCommentsByBookId(int bookId)
+        {
+            return await _context.Comments.Where(c => c.IdBook == bookId).ToListAsync();
+        }
         public async Task<IEnumerable<Comment>> GetCommentsAsync()
         {
             return await _context.Comments.ToListAsync();

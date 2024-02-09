@@ -78,4 +78,16 @@ public class CommentController : ControllerBase
         var comments = await _commentService.GetCommentsAsync();
         return Ok(comments);
     }
+    [HttpGet]
+    public async Task<ActionResult<List<Comment>>> GetCommentsByBookId(int bookId)
+    {
+        var comments = await _commentService.GetCommentsByBookId(bookId);
+
+        if (comments == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(comments);
+    }
 }

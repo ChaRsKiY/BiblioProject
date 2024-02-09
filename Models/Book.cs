@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Cryptography.X509Certificates;
 
 namespace BiblioServer.Models;
 
@@ -31,6 +32,9 @@ public class Book
     [Range(0, 10)]
     public double? Rating { get; set; } = 5;
 
+    public int RatingTotal { get; set; } = 0;
+
+    public int RatingCountTotal { get; set; } = 0;
     public int? ReadCounter { get; set; }
 
     public int? DownloadCount { get; set; }

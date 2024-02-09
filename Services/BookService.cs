@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using BiblioServer.Models;
 using BiblioServer.Repositories;
 using Microsoft.IdentityModel.Tokens;
@@ -152,6 +153,18 @@ namespace BiblioServer.Services
         public async Task<bool> DeleteBookAsync(int id)
         {
             return await _bookRepository.DeleteBookAsync(id);
+        }
+        public async Task UpdateRatingAsync(int newRating, int bookId)
+        {
+            var book = await _bookRepository.GetBookByIdAsync(bookId);
+            //if (book != null) {
+            //    retu
+            //}
+            book.RatingTotal += newRating;
+            book.RatingCountTotal++;
+            book.Rating = book.RatingTotal/ book.RatingCountTotal;
+
+            await _bookRepository.UpdateBookAsync(bookId, book);
         }
     }
 }
